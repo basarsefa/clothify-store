@@ -1,18 +1,20 @@
-import "./categories.style.scss";
-import Categories from "./components/categories/categories.component";
-import { useEffect, useState } from "react";
-import api from "./axiosInstance";
+import Home from "./routes/home/home.component";
+import { Routes, Route } from "react-router";
+import Navigation from "./routes/navigation/navigation.component";
+import Login from "./routes/login/login.component";
+
+const Shop = () => <h2>I'm Shop page.</h2>;
 
 const App = () => {
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    api.get("/api/categories").then((response) => {
-      setCategories(response.data);
-    });
-  });
-
-  return <Categories categories={categories} />;
+  return (
+    <Routes>
+      <Route path="/" element={<Navigation />}>
+        <Route index element={<Home />} />
+        <Route path="shop" element={<Shop />} />
+        <Route path="login" element={<Login />} />
+      </Route>
+    </Routes>
+  );
 };
 
 export default App;

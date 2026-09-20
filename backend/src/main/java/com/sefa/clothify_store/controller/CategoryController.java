@@ -10,7 +10,7 @@ import com.sefa.clothify_store.service.CategoryService;
 import java.util.List;
 
 @Controller 
-@RequestMapping ("/api")
+@RequestMapping ("/categories")
 public class CategoryController {
     private final CategoryService categoryService;
 
@@ -18,7 +18,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/categories")
+    @GetMapping("/v1/list")
     public ResponseEntity<List<Category>> getAllCategories() {
         List<Category> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(categories);

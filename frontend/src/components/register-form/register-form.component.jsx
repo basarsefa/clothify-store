@@ -34,7 +34,7 @@ const RegisterForm = () => {
     };
 
     try {
-      const response = await api.post("/auth/v1/register", requestData);
+      const response = await api.post("/auth/register", requestData);
       console.log(response.data);
       alert("Kayıt işlemi tamamlanmıştır.");
       resetFormFields();

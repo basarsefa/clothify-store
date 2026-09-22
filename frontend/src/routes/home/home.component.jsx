@@ -7,7 +7,7 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    api.get("/categories/v1/list").then((response) => {
+    api.get("/categories/list").then((response) => {
       setCategories(response.data);
     });
   }, []);

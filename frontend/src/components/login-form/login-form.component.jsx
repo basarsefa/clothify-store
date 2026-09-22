@@ -23,9 +23,16 @@ const LoginForm = () => {
     event.preventDefault();
 
     try {
-      const response = await api.post("/auth/v1/login", formFields);
+      const response = await api.post("/auth/login", formFields);
       console.log("token:", response.data);
-    } catch (error) {}
+      resetForm();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const resetForm = () => {
+    setFormFields(defaultFormFields);
   };
 
   const googleLogin = useGoogleLogin({
@@ -35,7 +42,7 @@ const LoginForm = () => {
           accessToken: tokenResponse.access_token,
         };
 
-        const response = await api.post("/auth/v1/google-login", payload);
+        const response = await api.post("/auth/google-login", payload);
         console.log("jwtToken: ", response.data);
       } catch (error) {
         console.log("hata: ", error);
@@ -64,11 +71,9 @@ const LoginForm = () => {
         />
         <div className="buttons-container">
           <Button type="submit">SIGN IN</Button>
-          <Button
-            buttonType="google"
-            type="submit"
-            onClick={googleLogin}
-          ></Button>
+          <Button buttonType="google" type="submit" onClick={googleLogin}>
+            SIGN IN WITH GOOGLE
+          </Button>
         </div>
       </form>
     </div>

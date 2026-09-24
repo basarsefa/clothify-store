@@ -48,6 +48,7 @@ const LoginForm = () => {
         console.log("hata: ", error);
       }
     },
+    scope: "openid email profile",
   });
 
   return (

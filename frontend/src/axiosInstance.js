@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// Create React App kullanıyorsanız:
 const BASE_URL = process.env.REACT_APP_API_URL;
 
 const api = axios.create({
@@ -9,5 +8,18 @@ const api = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
 
 export default api;

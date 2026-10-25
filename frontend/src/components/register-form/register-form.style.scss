@@ -6,4 +6,28 @@
   h2 {
     margin: 10px 0;
   }
+
+  // 🎯 YENİ: Dinamik Hata ve Başarı Kutuları İçin Eklenen Stiller
+  .alert {
+    padding: 12px 16px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+
+    // 🔴 Kırmızı Hata Kutusu (Status 500 veya kullanıcı hataları için)
+    &.alert-danger {
+      background-color: #fde8e8; // Yumuşak kırmızı arka plan
+      color: #9b1c1c; // Okunabilir koyu kırmızı yazı
+      border: 1px solid #f8b4b4;
+    }
+
+    // 🟢 Yeşil Başarı Kutusu (Kayıt başarılı mesajı için)
+    &.alert-success {
+      background-color: #def7ec; // Yumuşak yeşil arka plan
+      color: #03543f; // Okunabilir koyu yeşil yazı
+      border: 1px solid #bfecdb;
+    }
+  }
 }

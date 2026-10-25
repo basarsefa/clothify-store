@@ -14,6 +14,9 @@ const defaultFormFields = {
 const RegisterForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -21,9 +24,11 @@ const RegisterForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setErrorMessage("");
+    setSuccessMessage("");
 
     if (password !== confirmPassword) {
-      alert("Şifreler birbiriyle uyuşmuyor.");
+      setErrorMessage("Şifreler birbiriyle uyuşmuyor.");
       return;
     }
 
@@ -33,18 +38,26 @@ const RegisterForm = () => {
       password,
     };
 
+    setLoading(true);
+
     try {
       const response = await api.post("/auth/register", requestData);
-      console.log(response.data);
-      alert("Kayıt işlemi tamamlanmıştır.");
+      const message = response?.data?.message;
+      setSuccessMessage(message || "Kayıt işlemi başarılı!");
       resetFormFields();
     } catch (error) {
-      console.error(error);
-      if (error.response && error.response.data) {
-        alert(error.response.data);
+      const data = error?.response?.data;
+      const backendMessage = data?.message || "Sistemsel bir hata oluştu.";
+      const httpStatus = error?.response?.status || data?.status;
+      const requestId = data?.requestId || "none";
+      console.error("hata:", data);
+      if (httpStatus >= 500) {
+        setErrorMessage(`${backendMessage} (Hata referans kodu: ${requestId})`);
       } else {
-        alert("Bir hata oluştu, lütfen tekrar deneyin.");
+        setErrorMessage(backendMessage);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,11 +65,19 @@ const RegisterForm = () => {
     const { name, value } = event.target;
     setFormFields({ ...formFields, [name]: value });
   };
+
   return (
     <div className="register-container">
       <form onSubmit={handleSubmit}>
         <h2>Don't have an account? </h2>
         <span>Sign up with your email and password.</span>
+
+        {errorMessage && (
+          <div className="alert alert-danger">{errorMessage}</div>
+        )}
+        {successMessage && (
+          <div className="alert alert-success">{successMessage}</div>
+        )}
 
         <FormInput
           label="Name"
@@ -94,7 +115,9 @@ const RegisterForm = () => {
           name="confirmPassword"
         />
 
-        <Button type="submit">Sign Up</Button>
+        <Button type="submit" disabled={loading}>
+          SİGN UP
+        </Button>
       </form>
     </div>
   );

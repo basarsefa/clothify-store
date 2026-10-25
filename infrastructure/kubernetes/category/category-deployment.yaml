@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: category-service
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: category-service
+  template:
+    metadata:
+      labels:
+        app: category-service
+    spec:
+      containers:
+        - name: category-service
+          image: clothify-category:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8081
+          envFrom:
+            - configMapRef:
+                name: category-config
+            - secretRef:
+                name: category-secret
